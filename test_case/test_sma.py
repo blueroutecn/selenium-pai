@@ -4,6 +4,23 @@ import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+'''
+#打开首页随机选取拍品
+items = []
+html = urllib2.urlopen(siturl).read()
+soup = BeautifulSoup(html)
+itemlist = soup.findAll('input',id= re.compile("^itemId"))
+for i in xrange(0,len(itemlist)):
+    item = itemlist[i]['value']
+    items.append(item)
+print items
+#randitem = random.choice(items)
+randitem = '9920140912496'
+itemid = "itemName_i_" + randitem
+print itemid
+'''
+
 browserlist = ['chrome','firefox','ie']
 for browser in browserlist:
     driver = webdriver.Remote(

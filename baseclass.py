@@ -15,6 +15,7 @@ class BaseClass(unittest.TestCase):
         self.arg = arg
     '''
     def setUp(self):
+        '''
         browserlist = ['chrome','firefox']
         for browser in browserlist:
             self.driver = webdriver.Remote(
@@ -27,9 +28,11 @@ class BaseClass(unittest.TestCase):
                     'javascriptEnabled':True
                 }
             )
-            url = 'http://paisit.cnsuning.com/shanpai/index.htm'
-            self.driver.get(url)
-            #yield self.driver
+        '''
+        self.driver = webdriver.Chrome()
+        url = 'http://paisit.cnsuning.com/shanpai/index.htm'
+        self.driver.get(url)
+        #yield self.driver
     def tearDown(self):
         self.driver.quit()
     def test_01(self):

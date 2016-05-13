@@ -5,6 +5,7 @@ import HTMLTestRunner
 import unittest
 from BeautifulSoup import BeautifulSoup
 import re
+import os
 import random
 import urllib2
 from selenium import webdriver
@@ -14,23 +15,14 @@ from selenium.common.exceptions import NoSuchFrameException
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-'''
+#动态修改环境变量，导入自定义模块
+try:
+    sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
+    from path import SuperPath 
+except ImportError, e:
+    print "import moudle path fail,errinfo:%s" %e
+
 siturl = "http://paisit.cnsuning.com/shanpai/"
-items = []
-html = urllib2.urlopen(siturl).read()
-soup = BeautifulSoup(html)
-itemlist = soup.findAll('input',id= re.compile("^itemId"))
-for i in range(0,len(itemlist)):
-    item = itemlist[i]['value']
-    items.append(item)
-print items
-#randitem = random.choice(items)
-randitem = '9920140912496'
-itemid = "itemName_i_" + randitem
-print itemid
-'''
-#截图文件路径
-imagename = "D://test_result_//Screenshots//"+ itemid + ".png"
 #login data
 user = {"username":"593743227@qq.com","passwd":"1qaz2wsx"}
 
@@ -54,6 +46,7 @@ class PaiPcTest(unittest.TestCase):
         tomtab.click()
         time.sleep(1)
         self.assertEqual(self.current_url(), "http://paisit.cnsuning.com/shanpai/tomorrow.htm")
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link02(self):
         '''测试历史拍卖链接'''
         histab = self.driver.find_element_by_id("3")    
@@ -61,6 +54,7 @@ class PaiPcTest(unittest.TestCase):
         histab.click()
         time.sleep(1)
         self.assertEqual(self.current_url(), "http://paisit.cnsuning.com/shanpai/bidhistory.htm")
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link03(self):
         '''测试闪拍帮助链接'''
         helptab = self.driver.find_element_by_id("4")
@@ -68,6 +62,7 @@ class PaiPcTest(unittest.TestCase):
         helptab.click()
         time.sleep(1)
         self.assertEqual(self.current_url(), "http://paisit.cnsuning.com/shanpai/help/help.htm")
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link04(self):
         '''测试各场次tab'''
         tab = self.driver.find_element_by_xpath('/html/body/div[6]/div/div[1]/div[1]/div[1]/div/ul')
@@ -75,7 +70,7 @@ class PaiPcTest(unittest.TestCase):
         for i in range(1,len(tablist)+1):
             self.driver.find_element_by_name('index_today_tab_%s' %i).click()
             time.sleep(1)
-            #print i
+            self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link05(self):
         '''测试我的闪拍链接跳转'''
         currentwindow = self.driver.current_window_handle
@@ -89,7 +84,12 @@ class PaiPcTest(unittest.TestCase):
             if window != currentwindow:
                 self.driver.switch_to_window(window)
                 self.assertIn(member, self.current_url())
-
+                self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
+    def test_link06(self):
+        '''测试主页链接'''
+        time.sleep(1)
+        self.assertEqual(self.driver.current_url, siturl)
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
              
     def aatest_main_process(self):
         '''测试主流程'''

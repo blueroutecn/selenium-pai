@@ -189,9 +189,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>闪拍UI自动化测试报告</h1>
-<p class='attribute'><strong>Start Time:</strong> 2016-05-11 20:26:29</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:42.506000</p>
-<p class='attribute'><strong>Status:</strong> Pass 5 Error 1</p>
+<p class='attribute'><strong>Start Time:</strong> 2016-05-13 17:44:15</p>
+<p class='attribute'><strong>Duration:</strong> 0:01:05.503000</p>
+<p class='attribute'><strong>Status:</strong> Pass 6 Error 2</p>
 
 <p class='description'>闪拍PC端UI自动化测试详细情况如下</p>
 </div>
@@ -199,9 +199,9 @@ function showOutput(id, name) {
 
 
 <p id='show_detail_line'>Show
-<a href='javascript:showCase(2)'>All</a>
 <a href='javascript:showCase(0)'>Summary</a>
 <a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
 
 </p>
 <table id='result_table'>
@@ -232,7 +232,7 @@ function showOutput(id, name) {
 </tr>
 
 <tr id='ft1.1' class='none'>
-    <td class='errorCase'><div class='testcase'>test_paiepay</div></td>
+    <td class='errorCase'><div class='testcase'>test_epay</div></td>
     <td colspan='5' align='center'>
 
     <!--css div popup start-->
@@ -246,13 +246,13 @@ function showOutput(id, name) {
         </div>
         <pre>
         
-ft1.1: ImportError: Failed to import test module: test_paiepay
+ft1.1: ImportError: Failed to import test module: test_epay
 Traceback (most recent call last):
   File "C:\Python27\lib\unittest\loader.py", line 254, in _find_tests
     module = self._get_module_from_name(name)
   File "C:\Python27\lib\unittest\loader.py", line 232, in _get_module_from_name
     __import__(name)
-  File "D:\selenium-pai\test_case\test_paiepay.py", line 15, in &lt;module&gt;
+  File "D:\selenium-pai\test_case\test_epay.py", line 16, in &lt;module&gt;
     'javascriptEnabled':True
   File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 87, in __init__
     self.start_session(desired_capabilities, browser_profile)
@@ -286,12 +286,12 @@ URLError: &lt;urlopen error [Errno 10061] &gt;
 </tr>
 
 <tr class='passClass'>
-    <td>test_pai_pc.PaiPcTest: 测试闪拍pc</td>
-    <td>5</td>
-    <td>5</td>
+    <td>test_link.PaiPcTest: 测试闪拍pc</td>
+    <td>6</td>
+    <td>6</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c2',5)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c2',6)">Detail</a></td>
 </tr>
 
 <tr id='pt2.1' class='hiddenRow'>
@@ -319,12 +319,80 @@ URLError: &lt;urlopen error [Errno 10061] &gt;
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='total_row'>
-    <td>Total</td>
-    <td>6</td>
-    <td>5</td>
+<tr id='pt2.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_link06: 测试主页链接</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='errorClass'>
+    <td>unittest.loader.ModuleImportFailure</td>
+    <td>1</td>
+    <td>0</td>
     <td>0</td>
     <td>1</td>
+    <td><a href="javascript:showClassDetail('c3',1)">Detail</a></td>
+</tr>
+
+<tr id='ft3.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_sma</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft3.1')" >
+        error</a>
+
+    <div id='div_ft3.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft3.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft3.1: ImportError: Failed to import test module: test_sma
+Traceback (most recent call last):
+  File "C:\Python27\lib\unittest\loader.py", line 254, in _find_tests
+    module = self._get_module_from_name(name)
+  File "C:\Python27\lib\unittest\loader.py", line 232, in _get_module_from_name
+    __import__(name)
+  File "D:\selenium-pai\test_case\test_sma.py", line 33, in &lt;module&gt;
+    'javascriptEnabled':True
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 87, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 141, in start_session
+    'desiredCapabilities': desired_capabilities,
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 199, in execute
+    response = self.command_executor.execute(driver_command, params)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 395, in execute
+    return self._request(command_info[0], url, body=data)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 463, in _request
+    resp = opener.open(request, timeout=self._timeout)
+  File "C:\Python27\lib\urllib2.py", line 431, in open
+    response = self._open(req, data)
+  File "C:\Python27\lib\urllib2.py", line 449, in _open
+    '_open', req)
+  File "C:\Python27\lib\urllib2.py", line 409, in _call_chain
+    result = func(*args)
+  File "C:\Python27\lib\urllib2.py", line 1227, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File "C:\Python27\lib\urllib2.py", line 1197, in do_open
+    raise URLError(err)
+URLError: &lt;urlopen error [Errno 10061] &gt;
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>8</td>
+    <td>6</td>
+    <td>0</td>
+    <td>2</td>
     <td>&nbsp;</td>
 </tr>
 </table>
