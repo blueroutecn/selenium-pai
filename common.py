@@ -1,7 +1,12 @@
 #coding:utf-8
 import os
+import re
 import time
+import random
 import inspect
+import urllib2
+from BeautifulSoup import BeautifulSoup
+from ConfigParser import ConfigParser,NoSectionError,NoOptionError
 
 timestr = time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime())
 
@@ -51,11 +56,53 @@ class SuperPath(object):
         funcname = SuperPath.get_current_function_name()
         return funcname     #返回当前函数名称testfunction
 
+confpath = os.path.join(SuperPath.basepath(),'data.conf')
+
+class SuperConfig(object):
+    """读取配置文件类"""
+    def __init__(self, path=confpath):
+        super(SuperConfig, self).__init__()
+        self.path = path
+        #self.cf = ConfigParser()
+        #self.cf.read(path)
+    @staticmethod
+    def readconf(section,option):       #静态方法和类方法classmethod不可以访问实例变量self.path
+        try:
+            cf = ConfigParser()
+            cf.read(confpath)
+            value = cf.get(section,option)
+            return value
+        except NoSectionError,e:
+            print "section not found!"
+        except NoOptionError,e:
+            print "option not found!"
+    @staticmethod
+    def addconf(section,option,value):
+        cf = ConfigParser()
+        cf.read(confpath)
+        if cf.has_section(section):
+            cf.set(section,option,value)
+        else:
+            cf.add_section(section)
+            cf.set(section,option,value)
+        return
+
+def randitem():
+    items = []
+    siturl = SuperConfig.readconf('siturl', 'homeurl')
+    html = urllib2.urlopen(siturl).read()
+    soup = BeautifulSoup(html)
+    itemlist = soup.findAll('input',id= re.compile("^itemId"))
+    for i in xrange(0,len(itemlist)):
+        item = itemlist[i]['value']
+        items.append(item)
+    randitem = random.choice(items)
+    #randitem = '9920140912496'
+    itemid = "itemName_i_" + randitem
+    return itemid
+
 if __name__ == '__main__':
-    #print SuperPath.imagepath()
-    #print SuperPath.imagename('test')
-    h = SuperPath()
-    print h.testfunction()
+    randomitem()
 
 
     

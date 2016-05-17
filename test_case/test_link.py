@@ -3,11 +3,8 @@ import time
 import sys
 import HTMLTestRunner
 import unittest
-from BeautifulSoup import BeautifulSoup
 import re
 import os
-import random
-import urllib2
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
@@ -18,13 +15,11 @@ sys.setdefaultencoding('utf-8')
 #动态修改环境变量，导入自定义模块
 try:
     sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
-    from path import SuperPath 
+    from common import SuperPath,SuperConfig,randitem
 except ImportError, e:
     print "import moudle path fail,errinfo:%s" %e
 
-siturl = "http://paisit.cnsuning.com/shanpai/"
-#login data
-user = {"username":"593743227@qq.com","passwd":"1qaz2wsx"}
+siturl = SuperConfig.readconf('siturl','homeurl')
 
 class PaiPcTest(unittest.TestCase):
     """测试闪拍pc"""
@@ -39,6 +34,15 @@ class PaiPcTest(unittest.TestCase):
     def current_url(self):
         current_url = self.driver.current_url
         return current_url
+    def current_window(self):
+        current_window = self.driver.current_window_handle
+        return current_window
+    def switch_window(self,refwindow):
+        '''切换到新窗口'''
+        allwindow = self.driver.window_handles
+        for window in allwindow:
+            if window != refwindow:
+                self.driver.switch_to_window(window)
     def test_link01(self):        
         '''测试明日预热链接'''
         tomtab = self.driver.find_element_by_id("2")    
@@ -73,72 +77,31 @@ class PaiPcTest(unittest.TestCase):
             self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link05(self):
         '''测试我的闪拍链接跳转'''
-        currentwindow = self.driver.current_window_handle
+        current_window = self.current_window()
         member = 'https://passportsit.cnsuning.com/ids/login'
         mydeposit = self.driver.find_element_by_id('myDepositCart')
         self.assertTrue(mydeposit,u'未找到我的闪拍')
         mydeposit.click()
         time.sleep(2)
-        allwindow = self.driver.window_handles
-        for window in allwindow:
-            if window != currentwindow:
-                self.driver.switch_to_window(window)
-                self.assertIn(member, self.current_url())
-                self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
+        self.switch_window(current_window)
+        self.assertIn(member, self.current_url())
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
     def test_link06(self):
         '''测试主页链接'''
         time.sleep(1)
         self.assertEqual(self.driver.current_url, siturl)
         self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
-             
-    def aatest_main_process(self):
-        '''测试主流程'''
-        mainwindow = self.driver.current_window_handle
-        
-        self.driver.find_element_by_id(itemid).click()
-        self.driver.get_screenshot_as_file(imagename)
-        #screenshot = self.driver.get_screenshot_as_png() #binary data embedded in html
-        time.sleep(3)
-        allwindows = self.driver.window_handles
-        for window in allwindows:
-            if window!=mainwindow:
-                self.driver.switch_to_window(window)
-        depbtn = self.driver.find_element_by_id("depositBtn_%s" %randitem)
-        WebDriverWait(self.driver, 60).until(lambda the_driver:the_driver.find_element_by_id("depositBtn_%s" %randitem).is_displayed())
-        depbtn.click()
-        time.sleep(3)
-        try:
-            self.driver.switch_to_frame("iframeLogin")
-            self.driver.find_element_by_id("loginName").clear()
-            self.driver.find_element_by_id("loginName").send_keys(user["username"])
-            self.driver.find_element_by_id("loginPassword").clear()
-            self.driver.find_element_by_id("loginPassword").send_keys(user["passwd"])
-            self.driver.find_element_by_id("loginBtn").click()
-            self.driver.switch_to_window(mainwindow)
-            time.sleep(3)
-        except NoSuchFrameException, e:
-            print "未找到登录窗口！"
-        time.sleep(3)
-        self.driver.refresh()
-        self.driver.find_element_by_xpath('//*[@id="m-pay-tpl"]/div/div[2]/p[1]/input').click()
-        self.driver.find_element_by_id('next-submit').click()
+    def test_link07(self):
+        '''测试随机拍品链接'''
+        current_window = self.current_window()
+        self.driver.find_element_by_id(randitem()).click()
         time.sleep(2)
-        self.driver.find_element_by_id('m-pay-submit').click()
-    #except NoSuchElementException, e:
-        #print u"未找到该元素！"
-                     
+        self.switch_window(current_window)
+        time.sleep(1)
+        self.driver.get_screenshot_as_file(SuperPath.imagename(SuperPath.get_current_function_name()))
 if __name__ == '__main__':
     unittest.main()
     
-    '''
-    suite = unittest.TestLoader().loadTestsFromTestCase(PaiPcTest)
-    timestr = time.strftime('%Y%m%d%H%M%S',time.localtime())
-    filename = 'D://test_result//test_result_'+ timestr + '.html'
-    print filename
-    with open(filename,'wb') as fp:
-        runner = HTMLTestRunner.HTMLTestRunner(stream=fp,verbosity=1,title=u'闪拍PC测试报告',description=u'闪拍PC端基于UI的自动化测试')
-        runner.run(suite)
-    '''
 
 
         
