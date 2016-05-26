@@ -15,13 +15,13 @@ class SuperPath(object):
     def __init__(self):
         super(SuperPath, self).__init__()
         #self.arg = arg       
-    @staticmethod
-    def basepath():
+    @classmethod
+    def basepath(cls):
         path = os.path.abspath(os.path.dirname(__file__))
         return path
-    @staticmethod
-    def imagepath(dir='screen_shot'):
-        resultpath = os.path.join(SuperPath.basepath(),'test_result')
+    @classmethod
+    def imagepath(cls,dir='screen_shot'):
+        resultpath = os.path.join(cls.basepath(),'test_result')
         if os.path.exists(resultpath):
             os.chdir(resultpath)
         else:
@@ -39,10 +39,10 @@ class SuperPath(object):
             os.mkdir(timestr)
             screenshot_subdir = os.path.abspath(timestr)
         return screenshot_subdir
-    @staticmethod
-    def imagename(name):
+    @classmethod
+    def imagename(cls,name):
         timestamp = time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime())
-        imagename = os.path.join(SuperPath.imagepath(),name +'_' + timestamp + '.jpeg')
+        imagename = os.path.join(cls.imagepath(),name +'_' + timestamp + '.jpeg')
         return imagename
     @staticmethod
     def get_current_function_name():
@@ -102,7 +102,7 @@ def randitem():
     return itemid
 
 if __name__ == '__main__':
-    randomitem()
+    print SuperPath.imagename('test')
 
 
     
