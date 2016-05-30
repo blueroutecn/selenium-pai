@@ -7,41 +7,52 @@ import time
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
 class BaseClass(unittest.TestCase):
     """所有测试用例的基类，继承多浏览器执行"""
     '''
-    def __init__(self, arg):
+    def __init__(self, host, browser):
         super(BaseClass, self).__init__()
-        self.arg = arg
+        self.host = host
+        self.browser = browser
     '''
-    def setUp(self):
-        '''
-        browserlist = ['chrome','firefox']
-        for browser in browserlist:
-            self.driver = webdriver.Remote(
-                command_executor='http://127.0.0.1:4444/wd/hub',
+
+    def getbrowser(self):
+        browserlist = {
+            'http://192.168.1.4:5555/wd/hub': 'chrome',
+            'http://192.168.1.4:5556/wd/hub': 'internet explorer',
+            #'http://192.168.1.4:5557/wd/hub': 'firefox'
+        }
+
+        for host, browser in browserlist.items():
+            print host, browser
+            driver = webdriver.Remote(
+                command_executor=host,
                 desired_capabilities=
                 {
-                    'browserName':browser,
-                    'version':'',
-                    'platform':'ANY',
-                    'javascriptEnabled':True
+                    'browserName': browser,
+                    'version': '',
+                    'platform': 'ANY',
+                    'javascriptEnabled': True
                 }
             )
-        '''
-        self.driver = webdriver.Chrome()
-        url = 'http://paisit.cnsuning.com/shanpai/index.htm'
+            yield driver
+
+    def setUp(self):
+        print "Testing started!"
+
+        url = 'http://www.jd.com/'
+        self.driver = self.getbrowser().next()
         self.driver.get(url)
-        #yield self.driver
+
     def tearDown(self):
+        print "Testing stoped!"
         self.driver.quit()
+    '''
     def test_01(self):
-        '''测试明日预热链接'''
-        tomtab = self.driver.find_element_by_id("2")    
-        self.assertTrue(tomtab,u'明日预热标签未找到')
-        tomtab.click()
-        time.sleep(1)
-        self.assertEqual(self.driver.current_url, "http://paisit.cnsuning.com/shanpai/tomorrow.htm")
+        """测试明日预热链接"""
+        self.driver.find_element_by_link_text("服装城").click()
+        time.sleep(3)
+    '''
 if __name__ == '__main__':
     unittest.main()
-        
